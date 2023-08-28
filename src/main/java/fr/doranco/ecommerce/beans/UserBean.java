@@ -13,8 +13,8 @@ import javax.faces.bean.SessionScoped;
 
 import fr.doranco.ecommerce.entity.Adresse;
 import fr.doranco.ecommerce.entity.User;
-import fr.doranco.ecommerce.model.dao.IUserDao;
-import fr.doranco.ecommerce.model.dao.UserDao;
+import fr.doranco.ecommerce.meties.IUserMetier;
+import fr.doranco.ecommerce.meties.UserMetier;
 
 
 
@@ -41,7 +41,6 @@ public class UserBean implements Serializable {
 	@ManagedProperty(name = "email", value = "camus@doranco.fr")
 	private String email;
 
-	@ManagedProperty(name = "motDePasse", value = "12345678")
 	private String motDePasse;
 
 	@ManagedProperty(name = "motDePasseConfirmation", value = "12345678")
@@ -66,7 +65,7 @@ public class UserBean implements Serializable {
 
 	
 
-	private IUserDao userMetier = new UserDao();
+	private final IUserMetier userMetier = new UserMetier();
 	
 	private List<String> adressesStr = new ArrayList<String>();
 
@@ -95,7 +94,12 @@ public class UserBean implements Serializable {
 		return users;
 	}
 	
-	public int addUser() {
+	public String seConnecter() {
+		System.out.println("Méthode Se Connecter");
+		return "";
+	}
+	
+	public String addUser() {
 		messageError = "";
 		messageSuccess = "";
 		
@@ -111,24 +115,18 @@ public class UserBean implements Serializable {
 				user.getAdresses().add(adresse);
 			}
 			
-			int id = IUserDao.addUser(user);
-			this.genre = "";
-			this.nom = "";
-			this.prenom = "";
-			this.email = "";
+			userMetier.addUser(user);
 			adressesTemp.clear();
-			
-			messageSuccess = "Utilisateur créé avec succès. id = " + id;
-			messageError = "";
+			return "achats.xhtml";
 			
 		} catch (Exception e) {
 			messageSuccess = "";
 //			this.messageError = "Erreur lors de la création de l'utilisateur !\n"
 //					+ e.getMessage();
-			messageError = "Erreur d'inscription !";
-			e.printStackTrace();
+			messageError = "Erreur d'inscription !\n" + e.getMessage();
+			System.out.println(e);
+			return "";
 		}
-		return "";
 	}
 
 	public String deleteUser(User user) {
@@ -141,6 +139,10 @@ public class UserBean implements Serializable {
 		messageError = "";
 		messageSuccess = "";
 		Adresse adresse = new Adresse();
+		adresse.setNumero(numero);
+		adresse.setRue(rue);
+		adresse.setVille(ville);
+		adresse.setCodePostal(codePostal);
 		this.adressesTemp.add(adresse);
 		this.numero = "";
 		this.rue = "";

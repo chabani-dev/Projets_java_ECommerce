@@ -2,27 +2,27 @@ package fr.doranco.ecommerce.entity;
 
 public class Adresse {
 	
-	private Integer id;
+	private int id;
 	private String numero;
 	private String rue;
 	private String ville;
-	private int codePostal;
+	private String codePostal;
 
 	public Adresse() {
 	}
 
-	public Adresse(String numero, String rue, String ville, int codePostal) {
+	public Adresse(String numero, String rue, String ville, String codePostal) {
 		this.numero = numero;
 		this.rue = rue;
 		this.ville = ville;
 		this.codePostal = codePostal;
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -50,12 +50,12 @@ public class Adresse {
 		this.ville = ville;
 	}
 
-	public int getCodePostal() {
+	public String getCodePostal() {
 		return codePostal;
 	}
 
-	public void setCodePostal(int i) {
-		this.codePostal = i;
+	public void setCodePostal(String codePostal) {
+		this.codePostal = codePostal;
 	}
 
 	@Override

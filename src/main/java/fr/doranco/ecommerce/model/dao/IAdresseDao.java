@@ -8,4 +8,5 @@ public interface IAdresseDao {
 
 	Set<Adresse> getAdresseByUserId(int userId) throws Exception;
 	int addAdresse(Adresse adresse, int userId) throws Exception;
+	int  deleteAdresse(int id ) throws  Exception;
 }

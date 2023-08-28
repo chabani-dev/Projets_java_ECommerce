@@ -13,7 +13,7 @@ public class UserMetier implements IUserMetier{
 	private final IUserDao userDao = new UserDao();
 
 	public int addUser(User user) throws Exception {
-		return IUserDao.addUser(user);
+		return userDao.addUser(user);
 	}
 
 	public User seConnecter(String email, String motDePasse) throws Exception {

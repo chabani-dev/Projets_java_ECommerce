@@ -32,7 +32,7 @@ public class AdresseDao implements IAdresseDao {
 		        adresse.setNumero(rs.getString("numero"));
 		        adresse.setVille(rs.getString("ville"));
 		        adresse.setRue(rs.getString("rue"));
-		        adresse.setCodePostal(rs.getInt("code_postal"));;
+		        adresse.setCodePostal(rs.getString("code_postal"));;
 		        adresses.add(adresse);
 		    }
 		    	}
@@ -54,7 +54,7 @@ public class AdresseDao implements IAdresseDao {
 		    ps.setString(2,adresse.getNumero());
 		    ps.setString(3,adresse.getRue());
 		    ps.setString(4, adresse.getVille());
-		    ps.setInt(5, adresse.getCodePostal());
+		    ps.setString(5, adresse.getCodePostal());
 		    ps.executeUpdate();
 		    ResultSet rs =  ps.getGeneratedKeys();
 		    if (rs != null && rs.next()) {
@@ -66,5 +66,18 @@ public class AdresseDao implements IAdresseDao {
 		
 
 	}
+		
+		
+		public void deleteAdresse(int id) throws Exception {
+			
+			if (id <= 0) {
+				throw new IllegalArgumentException("L'id doit être >0");
+			}
+			Connection connection = ECommerceDataSource.getInstance().getConnection();
+			String requete = "DELETE FROM user WHERE id= ?";
+			PreparedStatement ps = connection.prepareStatement(requete);
+			ps.setInt(1, id);
+			ps.executeUpdate();
+		}
 
 }

@@ -24,7 +24,9 @@
 			<h3>Infos utilisateur :</h3>
 			<h:panelGroup id="panelUser">
 
+
 				<h:panelGrid columns="3" cellpadding="0" cellspacing="2">
+
 					<h:outputLabel value="Genre : "></h:outputLabel>
 					<h:selectOneRadio id="genre" value="#{userbean.genre}"
 						required="true" requiredMessage="Le Genre est obligatoire">
@@ -84,15 +86,6 @@
 					</h:inputText>
 					<h:message for="dateNaissance" style="color:red"></h:message>
 
-					<h:outputLabel value="Niveau de service : "></h:outputLabel>
-					<h:selectOneMenu id="niveauService"
-						value="#{userbean.niveauService}" required="true"
-						requiredMessage="Le nniveau de service est obligatoire !">
-						<f:selectItem itemLabel="Basic" itemValue="basic" />
-						<f:selectItem itemLabel="Medium" itemValue="medium" />
-						<f:selectItem itemLabel="Premium" itemValue="premium" />
-					</h:selectOneMenu>
-					<h:message for="situation" style="color:red"></h:message>
 				</h:panelGrid>
 
 			</h:panelGroup>
@@ -104,7 +97,6 @@
 					</h:commandButton>
 					<h:button id="alert" value="Alerte" onclick="alert('Bonjour !')">
 					</h:button>
-
 				</h:panelGrid>
 			</h:panelGroup>
 
@@ -112,7 +104,7 @@
 				<h:panelGrid columns="1" cellpadding="0" cellspacing="0">
 					<h:outputText value="#{userbean.messageSuccess}"
 						style="color:green"></h:outputText>
-					<h:outputText value="#{userbean.messageError}" style="color:red"></h:outputText>
+					<h:outputText value="#{userbean.messageError}" style="color:orange"></h:outputText>
 				</h:panelGrid>
 			</h:panelGroup>
 
@@ -163,7 +155,7 @@
 		<h:form>
 			<h:panelGrid columns="1" cellpadding="0" cellspacing="0">
 				<ui:repeat value="#{userbean.getAllAdresses()}" var="a">
-					<h:outputText style="color:blue" value="#{a}" />
+					<h:outputText style="color:yellow" value="#{a}" />
 					<br />
 				</ui:repeat>
 			</h:panelGrid>
