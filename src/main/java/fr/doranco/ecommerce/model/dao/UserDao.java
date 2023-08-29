@@ -118,7 +118,7 @@ public class UserDao implements IUserDao {
 				user.setPrenom(rs.getString("prenom"));
 				user.setEmail(rs.getString("email"));
 				user.setMotDePasse(rs.getString("password"));
-				user.setDateNaissance(Dates.convertDateUtilToDateSql(user.getDateNaissance()));
+				user.setDateNaissance(Dates.convertDateUtilToDateSql(rs.getDate("date_naissance")));
 				user.setGenre(rs.getString("genre"));
 				users.add(user);
 			}

@@ -26,3 +26,74 @@
 .order-table-column {
     background: none repeat scroll 0 0 #f9f9F9;
 }
+
+/* Styles for the form */
+h4 {
+  color: #333;
+}
+
+h3 {
+  color: #666;
+  margin-top: 20px;
+}
+
+#panelUser {
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #f5f5f5;
+}
+
+#panelButtons {
+  margin-top: 20px;
+}
+
+#panelMessagess {
+  margin-top: 20px;
+}
+
+/* Styles for input labels */
+h:outputLabel {
+  display: inline-block;
+  width: 120px;
+  font-weight: bold;
+  color: #555;
+}
+
+/* Styles for input fields */
+h:inputText, h:inputSecret {
+  width: 200px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Styles for selectOneRadio */
+h:selectOneRadio {
+  margin-top: 10px;
+}
+
+/* Styles for command buttons */
+h:commandButton, h:button {
+  padding: 8px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* Styles for error messages */
+h:message {
+  margin-left: 120px;
+  font-size: 12px;
+}
+
+/* Styles for success and error messages */
+h:outputText {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+}

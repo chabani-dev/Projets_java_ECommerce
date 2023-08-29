@@ -1,9 +1,9 @@
 body{
 	
-background-image:url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGOJeFDihOFM16cLkJ4A2NdA4-DTmvvzT4Kg&usqp=CAU");
-/*background-image: revert;*/
+background-color: #a4c3b2;
+background-image: revert;
 /* background-color: transparent;*/
-/* background-repeat: no-repeat;*/
+background-repeat: no-repeat;
 }
 
 #page{
@@ -59,9 +59,68 @@ input#form\:addUser {
     height: 30px;
     left: 14vh;
 }
-form#form {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-content: center;
+/* Styles for the form */
+
+form#form  {
+  margin: 51px auto;
+    width: 462px;
+    padding: 65px;
+    border: 1px solid #ddd;
+    background-color: #f5f5f5;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    border-radius: 30px;
+  box-shadow: inset 1px 0px 14px 13px #877676;
 }
+
+h3 {
+  color: #333;
+}
+
+/* Styles for input labels */
+h:outputLabel {
+  display: block;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+/* Styles for input fields */
+h:inputText, h:inputSecret {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* Styles for error messages */
+h:message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* Styles for success and error messages */
+h:outputText {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* Styles for command buttons */
+h:commandButton {
+  padding: 8px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* Spacing for paragraphs */
+p {
+  margin: 10px 0;
+}
+

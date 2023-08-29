@@ -21,6 +21,8 @@ public class UserMetier implements IUserMetier{
 	}
 
 	public void deleteUser(int id) throws Exception {
+		
+		userDao.deleteUser(id);
 
 	}
 

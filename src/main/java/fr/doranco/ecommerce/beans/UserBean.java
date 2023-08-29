@@ -78,12 +78,9 @@ public class UserBean implements Serializable {
 
 		try {
 			users = userMetier.getUsers();
-
 		} catch (Exception e) {
-			messageSuccess = "Utilisateur créé avec succès";
-
-			messageError = " erreur d'inscription !";
-			e.printStackTrace();
+			messageError = "Erreur technique lors de la récupération de la liste des utilisateurs !\n" + e.getMessage();
+			System.out.println(e);
 		}
 		return users;
 	}

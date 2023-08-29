@@ -58,7 +58,6 @@
 					<h:inputText id="email" value="#{userbean.email}" required="true"
 						requiredMessage="L'email est obligatoire !">
 						<f:validateLength minimum="8" maximum="30" />
-						<!-- 					<f:validateRegex pattern="^[a-z]{1,}[A-Z]{1,}[0-9]{1,}[@%!-+?]{1,}*"></f:validateRegex> -->
 					</h:inputText>
 					<h:message for="email" style="color:red"></h:message>
 
@@ -67,6 +66,8 @@
 						required="true"
 						requiredMessage="Le mot de passe est obligatoire !">
 						<f:validateLength minimum="8" maximum="30" />
+						<f:validateRegex pattern="(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[^A-Za-z0-9])(?=.{8,})"></f:validateRegex>
+						
 					</h:inputSecret>
 					<h:message for="motDePasse" style="color:red"></h:message>
 
