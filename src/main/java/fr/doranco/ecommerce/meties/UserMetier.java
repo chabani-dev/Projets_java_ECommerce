@@ -17,8 +17,7 @@ public class UserMetier implements IUserMetier{
 	}
 
 	public User seConnecter(String email, String motDePasse) throws Exception {
-
-		return null;
+		return userDao.getUserByEmail(email);
 	}
 
 	public void deleteUser(int id) throws Exception {
@@ -27,7 +26,7 @@ public class UserMetier implements IUserMetier{
 
 	public List<User> getUsers() throws Exception {
 
-		return null;
+		return userDao.getUsers();
 	}
 
 	

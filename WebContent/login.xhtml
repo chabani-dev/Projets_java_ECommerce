@@ -13,31 +13,44 @@
 	<ui:composition template="/resources/templates/layout.xhtml">
 		<ui:define name="content">
 			<h:form id="form">
+				<h3>Vous pouvez vous connecter via ce formulaire :</h3>
+
 				<h:panelGrid columns="3" cellpadding="0" cellspacing="2">
+					<h:outputLabel value="Email : "></h:outputLabel>
+					<h:inputText id="email" value="#{userbean.email}" required="true"
+						requiredMessage="L'email est obligatoire !">
 
-					<h:outputText value="Login :" />
-					<h:inputText id="email" label="Email :" size="20" required="true">
 					</h:inputText>
-					<br></br>
+					<h:message for="email" style="color:red"></h:message>
 
-					<h:outputText value="Mot de Passe :" />
-					<h:inputSecret id="motDePasse" label="Mot de passe :" size="20"
-						required="true">
+					<h:outputLabel value="Mot de passe : "></h:outputLabel>
+					<h:inputSecret id="motDePasse" value="#{userbean.motDePasse}"
+						size="20" required="true"
+						requiredMessage="Le mot de passe est obligatoire !">
 					</h:inputSecret>
-
+					<h:message for="motDePasse" style="color:red"></h:message>
+				</h:panelGrid>
+				<h:panelGrid columns="1" cellpadding="0" cellspacing="0">
+					<h:outputText value="#{userbean.messageSuccess}"
+						style="color:green"></h:outputText>
+					<h:outputText value="#{userbean.messageError}" style="color:orange"></h:outputText>
 				</h:panelGrid>
 
-				<h:panelGrid columns="3" cellpadding="0" cellspacing="8">
+				<p></p>
+				<h:panelGrid columns="2" cellpadding="0" cellspacing="2">
+					<h:outputLabel value=""></h:outputLabel>
 					<h:commandButton id="addUser" value="se Connecter"
 						action="#{userbean.seConnecter()}">
 					</h:commandButton>
-					</h:button>
 				</h:panelGrid>
-				</h:panelGroup>
+				<p></p>
 
 			</h:form>
-
-
+			<h:form>
+				<h:commandLink value="Cliquez ici pour vous inscrire"
+					action="#{userbean.inscription()}" style="color:yellow">
+				</h:commandLink>
+			</h:form>
 		</ui:define>
 	</ui:composition>
 </h:body>

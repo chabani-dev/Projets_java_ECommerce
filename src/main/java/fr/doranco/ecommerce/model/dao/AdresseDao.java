@@ -3,6 +3,7 @@ package fr.doranco.ecommerce.model.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Set;
@@ -66,18 +67,39 @@ public class AdresseDao implements IAdresseDao {
 		
 
 	}
-		
-		
-		public void deleteAdresse(int id) throws Exception {
-			
-			if (id <= 0) {
-				throw new IllegalArgumentException("L'id doit être >0");
-			}
-			Connection connection = ECommerceDataSource.getInstance().getConnection();
-			String requete = "DELETE FROM user WHERE id= ?";
-			PreparedStatement ps = connection.prepareStatement(requete);
-			ps.setInt(1, id);
-			ps.executeUpdate();
+	public int deleteAdresse(int id) throws Exception {
+		    if (id <= 0) {
+		        throw new IllegalArgumentException("L'id doit être >0");
+		    }
+
+		    Connection connection = null;
+		    PreparedStatement ps = null;
+		    try {
+		        connection = ECommerceDataSource.getInstance().getConnection();
+		        String requete = "DELETE FROM adresse WHERE id = ?";
+		        ps = connection.prepareStatement(requete);
+		        ps.setInt(1, id);
+		        return ps.executeUpdate();
+		    } catch (Exception e) {
+		        // Gérer l'exception
+		        throw e;
+		    } finally {
+		        // Fermeture de la connexion et du PreparedStatement dans le bloc finally
+		        if (ps != null) {
+		            try {
+		                ps.close();
+		            } catch (SQLException e) {
+		                // Gérer l'exception liée à la fermeture du PreparedStatement
+		            }
+		        }
+		        if (connection != null) {
+		            try {
+		                connection.close();
+		            } catch (SQLException e) {
+		                // Gérer l'exception liée à la fermeture de la connexion
+		            }
+		        }
+		    }
 		}
 
 }

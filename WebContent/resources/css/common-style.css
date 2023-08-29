@@ -51,4 +51,17 @@ img {
     width: 9%;
     display: block;
 }
-
+input#form\:addUser {
+    display: flex;
+    position: relative;
+    background: #b94646;
+    border-radius: 6px;
+    height: 30px;
+    left: 14vh;
+}
+form#form {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+}

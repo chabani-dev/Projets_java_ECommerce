@@ -81,7 +81,8 @@
 
 					<h:outputLabel value="Date de naissance : "></h:outputLabel>
 					<h:inputText id="dateNaissance" value="#{userbean.dateNaissance}"
-						required="true" requiredMessage="La date de naissance est obligatoire !">
+						required="true"
+						requiredMessage="La date de naissance est obligatoire !">
 						<f:convertDateTime pattern="dd/MM/yyyy"></f:convertDateTime>
 					</h:inputText>
 					<h:message for="dateNaissance" style="color:red"></h:message>
@@ -163,7 +164,7 @@
 		</h:form>
 
 		<h:form>
-			<h4>Listes des utilisateurs</h4>
+			<h4>Liste des utilisateurs</h4>
 
 			<h:dataTable id="datatable" value="#{userbean.getUsers()}" var="u"
 				styleClass="order-table" headerClass="order-table-header"

@@ -8,7 +8,7 @@ public interface IUserDao {
 
 	public int addUser(User user) throws Exception;
 
-	public User seConnecter(String email, String motDePasse) throws Exception;
+	public User getUserByEmail(String email) throws Exception;
 
 	public void deleteUser(int id) throws Exception;
 
