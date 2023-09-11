@@ -157,33 +157,33 @@ public class UserBean implements Serializable {
 		}
 
 		try {
-			User currentUser= userMetier.getUserByEmail(email);
-			if(currentUser !=null) {
-				
-				currentUser.setPassword(password);
-				userMetier.updatePassword(password, currentUser.getEmail());
-			
-		        password = "";
-		        motDePasseConfirmation = "";
-	            
-	            messageSuccess = "Votre mot de passe a été modifié avec succès.";
-	            return "login.xhtml";
-	    		
-			}else {
-				
-				messageError = "Utilisateur introuvable avec cette adresse e-mail.";
-			}
-			
-			
+        User currentUser = userMetier.getUserByEmail(email);
+        if (currentUser != null) {
+            // Récupérer la session existante ou en créer une nouvelle si elle n'existe pas
+            FacesContext context = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) context.getExternalContext().getSession(true);
+            
+            // Stocker l'objet utilisateur dans la session
+            session.setAttribute("user", currentUser);
 
-		} catch (Exception e) {
-			messageSuccess = "";
-			messageError = "Erreur d'inscription !\n" + e.getMessage();
-			System.out.println(e);
-		
-		}
-		return "";
-	}
+            currentUser.setPassword(password);
+            userMetier.updatePassword(password, currentUser.getEmail());
+
+            password = "";
+            motDePasseConfirmation = "";
+
+            messageSuccess = "Votre mot de passe a été modifié avec succès.";
+            return "login.xhtml";
+        } else {
+            messageError = "Utilisateur introuvable avec cette adresse e-mail.";
+        }
+    } catch (Exception e) {
+        messageSuccess = "";
+        messageError = "Erreur d'inscription !\n" + e.getMessage();
+        System.out.println(e);
+    }
+    return "";
+}
 	
 	
 	public String deleteUser(User user) {
