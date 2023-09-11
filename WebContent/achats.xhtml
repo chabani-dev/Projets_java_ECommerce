@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-	  
+
 <h:head>
-    <title>Registration Form</title>
+
+	<title>Registration Form</title>
 </h:head>
 <h:body>
-<h1>Page des achats</h1>
+	<ui:composition template="/resources/templates/layout.xhtml">
+		<ui:define name="content">
+			<h1>Page des achats</h1>
+			<f:view>
+				<h:link outcome="updatepassword.xhtml">
+					<h:outputText value="Cliquez ici pour mettre à jour votre mot passe"></h:outputText>
+				</h:link>
+			</f:view>
+		</ui:define>
+	</ui:composition>
 </h:body>
 </html>

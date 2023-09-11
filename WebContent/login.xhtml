@@ -24,7 +24,7 @@
 					<h:message for="email" style="color:red"></h:message>
 
 					<h:outputLabel value="Mot de passe : "></h:outputLabel>
-					<h:inputSecret id="motDePasse" value="#{userbean.motDePasse}"
+					<h:inputSecret id="motDePasse" value="#{userbean.password}"
 						size="20" required="true"
 						requiredMessage="Le mot de passe est obligatoire !">
 					</h:inputSecret>
@@ -47,9 +47,9 @@
 
 			</h:form>
 			<h:form>
-				<h:commandLink value="Cliquez ici pour vous inscrire"
-					action="#{userbean.inscription()}" style="color:#ff5400">
-				</h:commandLink>
+				<h:link value="Cliquez ici pour vous inscrire"
+					outcome="inscription.xhtml" style="color:#ff5400">
+				</h:link>
 			</h:form>
 		</ui:define>
 	</ui:composition>

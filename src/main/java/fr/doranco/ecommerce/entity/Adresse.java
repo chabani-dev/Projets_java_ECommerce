@@ -1,21 +1,56 @@
 package fr.doranco.ecommerce.entity;
 
-public class Adresse {
-	
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "adresse")
+public class Adresse implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private int id;
+
+	@Column(name = "numero", length = 4, nullable = false)
 	private String numero;
+
+	@Column(name = "rue", length = 45, nullable = false)
 	private String rue;
+
+	@Column(name = "Ville", length = 20, nullable = false)
 	private String ville;
+
+	@Column(name = "code_postal", length = 5, nullable = false)
 	private String codePostal;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 
 	public Adresse() {
 	}
 
-	public Adresse(String numero, String rue, String ville, String codePostal) {
+	public Adresse(String numero, String rue, String ville, String codePostal, User user) {
+
 		this.numero = numero;
 		this.rue = rue;
 		this.ville = ville;
 		this.codePostal = codePostal;
+		this.user = user;
 	}
 
 	public int getId() {

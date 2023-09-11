@@ -1,129 +1,212 @@
 package fr.doranco.ecommerce.model.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import fr.doranco.ecommerce.entity.Adresse;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+
 import fr.doranco.ecommerce.entity.User;
-import fr.doranco.ecommerce.model.ECommerceDataSource;
-import fr.doranco.utils.Dates;
+import fr.doranco.hibernate.model.connect.HeberniteDataSource;
 
 public class UserDao implements IUserDao {
 
-	public int addUser(User user) throws Exception {
+	public void addUser(User user) throws Exception {
 
-		Connection connection = null;
-		ResultSet rs = null;
+		Session session = HeberniteDataSource.getInstance().getSession();
+		Transaction tx = null;
 
 		try {
 
-			if (user == null) {
-				throw new NullPointerException("Le user ne doit pas être null !");
-			}
-			if (user.getNom() == null || user.getNom().trim().isEmpty() || user.getPrenom() == null
-			// verifie que le champs n'est pas remplis avec des espaces
-
-					|| user.getPrenom().trim().isEmpty()) {
-				throw new IllegalArgumentException("Des paramètres du User sont manquants");
-			}
-			connection = ECommerceDataSource.getInstance().getConnection();
-			String requete = "INSERT INTO user(nom, prenom, email, password, date_naissance ,genre) VALUES(?,?,?,?,?,?)";
-			PreparedStatement ps = connection.prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
-			ps.setString(1, user.getNom());
-			ps.setString(2, user.getPrenom());
-			ps.setString(3, user.getEmail());
-			ps.setString(4, user.getMotDePasse());
-			ps.setDate(5, Dates.convertDateUtilToDateSql(user.getDateNaissance()));
-			ps.setString(6, user.getGenre());
-			ps.executeUpdate();
-
-			rs = ps.getGeneratedKeys();
-			if (rs != null && rs.next()) {
-				user.setId(rs.getInt(1));
-			}
-			IAdresseDao adresseDao = new AdresseDao();
-			if (user.getAdresses() != null && !user.getAdresses().isEmpty()) {
-				for (Adresse adresse : user.getAdresses()) {
-					int id = adresseDao.addAdresse(adresse, user.getId());
-					adresse.setId(id);
-				}
-			}
-
+			tx = session.beginTransaction();
+			session.save(user);
+			user.getAdresses().forEach(a -> session.save(a));
+			tx.commit();
 		} catch (Exception e) {
-			// Gestion de l'exception
-			throw e;
+			if (tx != null) {
+				tx.rollback();
+			}
 		} finally {
-			// Fermeture de la connexion dans le bloc finally
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException e) {
-					// Gérer l'exception liée à la fermeture de la connexion
-				}
+			if (session != null && session.isOpen()) {
+				session.close();
 			}
 		}
-		return user.getId();
+
+	}
+
+	public User getUser(int userId) throws Exception {
+		Session session = HeberniteDataSource.getInstance().getSession();
+		try {
+			User user = session.find(User.class, userId);
+
+			return user;
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+	}
+
+	public void updateUser(User user) throws Exception {
+		Session session = HeberniteDataSource.getInstance().getSession();
+		Transaction tx = null;
+
+		try {
+
+			tx = session.beginTransaction();
+			session.update(user.getAdresses());
+			session.save(user);
+			tx.commit();
+		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+	}
+
+	public void removeUser(Integer id) throws Exception {
+		Session session = HeberniteDataSource.getInstance().getSession();
+		Transaction tx = null;
+
+		try {
+			tx = session.beginTransaction();
+			User user = session.find(User.class, id);
+			if (user != null) {
+				session.remove(user);
+			}
+			tx.commit();
+		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
+			throw e;
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+	}
+
+	public List<User> getUsers() throws Exception {
+		Session session = HeberniteDataSource.getInstance().getSession();
+		Transaction tx = null;
+		List<User> users;
+		try {
+			tx = session.beginTransaction();
+			Query<User> query = session.createQuery("SELECT u FROM User u", User.class);
+			users = query.getResultList();
+			tx.commit();
+		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
+			throw e;
+		} finally {
+			session.close();
+		}
+		return users;
 	}
 
 	public User getUserByEmail(String email) throws Exception {
 		if (email == null || email.trim().isEmpty()) {
-			throw new IllegalArgumentException("L'id doit être null ");
+			throw new IllegalArgumentException("L'email doit être renseigné !");
 		}
-		Connection connection = ECommerceDataSource.getInstance().getConnection();
-		String requete = "SELECT * FROM user WHERE email = ?";
-		PreparedStatement ps = connection.prepareStatement(requete);
-		ps.setString(1, email);
-		ResultSet rs = ps.executeQuery();
+		Session session = null;
 		User user = null;
-		if (rs != null && rs.next()) {
-			user = new User();
-			user.setId(rs.getInt("id"));
-			user.setNom(rs.getString("nom"));
-			user.setPrenom(rs.getString("prenom"));
-			user.setEmail(rs.getString("email"));
-			user.setMotDePasse(rs.getString("password"));
+		try {
+			session = HeberniteDataSource.getInstance().getSession();
+			Query<User> query = session.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
+			query.setParameter("email", email);
+			user = query.uniqueResult();
+		} finally {
+			if (session != null) {
+				session.close();
+			}
 		}
 		return user;
 	}
 
-	public void deleteUser(int id) throws Exception {
+	public List<User> getUsersOfVille(String ville) throws Exception {
+		Session session = HeberniteDataSource.getInstance().getSession();
+		Transaction tx = null;
+		List<User> users;
 
-		if (id <= 0) {
-			throw new IllegalArgumentException("L'id doit être >0");
+		try {
+			tx = session.beginTransaction();
+			String jpql = "SELECT u FROM User u JOIN FETCH u.adresse a WHERE a.ville = :ville";
+			Query<User> query = session.createQuery(jpql, User.class);
+			query.setParameter("ville", ville);
+			users = query.getResultList();
+			tx.commit();
+		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
+			throw e;
+		} finally {
+			session.close();
 		}
-		Connection connection = ECommerceDataSource.getInstance().getConnection();
-		String requete = "DELETE FROM user WHERE id= ?";
-		PreparedStatement ps = connection.prepareStatement(requete);
-		ps.setInt(1, id);
-		ps.executeUpdate();
+
+		return users;
 	}
 
-	public List<User> getUsers() throws Exception {
+	@Override
+	public Map<String, List<User>> getUsersByVille(String ville) throws Exception {
+		Session session = HeberniteDataSource.getInstance().getSession();
+		Transaction tx = null;
+		try {
 
-		Connection connection = ECommerceDataSource.getInstance().getConnection();
-		String requete = "SELECT * FROM user";
-		PreparedStatement ps = connection.prepareStatement(requete);
-		ResultSet rs = ps.executeQuery();
-		List<User> users = new ArrayList<User>();
-		if (rs != null) {
-			while (rs.next()) {
-				User user = new User();
-				user.setId(rs.getInt("id"));
-				user.setNom(rs.getString("nom"));
-				user.setPrenom(rs.getString("prenom"));
-				user.setEmail(rs.getString("email"));
-				user.setMotDePasse(rs.getString("password"));
-				user.setDateNaissance(Dates.convertDateUtilToDateSql(rs.getDate("date_naissance")));
-				user.setGenre(rs.getString("genre"));
-				users.add(user);
+			tx = session.beginTransaction();
+			Query<User> query = session.createQuery("SELECT u FROM User u WHERE u.ville = :ville", User.class);
+			query.setParameter("ville", ville);
+			List<User> users = query.list();
+			tx.commit();
+
+			Map<String, List<User>> usersByVille = new HashMap<>();
+			usersByVille.put(ville, users);
+
+			return usersByVille;
+		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
 			}
+			throw e;
+		} finally {
+			session.close();
 		}
-		return users;
+	}
+
+	public void updatePassword(String password, String email) {
+		Session session = HeberniteDataSource.getInstance().getSession();
+		Transaction tx = null;
+		
+		try {
+			tx = session.beginTransaction();
+			 String jpql = "UPDATE User u SET u.password = :newPassword WHERE u.id = :userId";
+	            int updatedCount = session.createQuery(jpql)
+	                    .setParameter("password", password)
+	                    .setParameter("email", email)
+	                    .executeUpdate();
+	            if(updatedCount> 0) {
+	            	tx.commit();
+	            }
+			
+		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
+			throw e;
+		} finally {
+			session.close();
+		}
+		
 	}
 
 }

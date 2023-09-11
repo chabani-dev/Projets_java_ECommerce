@@ -10,6 +10,8 @@ import java.util.Set;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import fr.doranco.ecommerce.entity.Adresse;
 import fr.doranco.ecommerce.entity.User;
@@ -37,9 +39,10 @@ public class UserBean implements Serializable {
 	@ManagedProperty(name = "email", value = "camus@doranco.fr")
 	private String email;
 
-	private String motDePasse;
+	private String oldPassword;
 
-	@ManagedProperty(name = "motDePasseConfirmation", value = "12345678")
+	private String password;
+
 	private String motDePasseConfirmation;
 
 	@ManagedProperty(name = "numero", value = "16")
@@ -53,6 +56,9 @@ public class UserBean implements Serializable {
 
 	@ManagedProperty(name = "codePostal", value = "75000")
 	private String codePostal;
+	
+	
+	private boolean isActive;
 
 	private static String messageSuccess = "";
 	private static String messageError = "";
@@ -88,34 +94,40 @@ public class UserBean implements Serializable {
 	public String seConnecter() {
 		messageSuccess = "";
 		try {
-			User user = userMetier.seConnecter(email, motDePasse);
-			if (user != null && user.getMotDePasse().equals(this.motDePasse)) {
+			User user = userMetier.seConnecter(email, password);
+			if (user != null) {
+				FacesContext context = FacesContext.getCurrentInstance();
+	            HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+	            session.setAttribute("user", user);
 				return "achats.xhtml";
 			}
 			messageError = "Email et/ou mot de passe incorrect(s) !";
+			
 		} catch (Exception e) {
 			messageError = "Erreur technique lors de l'identification !\n" + e.getMessage();
 			System.out.println(e);
 		}
 		return "";
 	}
-
-	public String inscription() {
-		messageError = messageSuccess = "";
-		return "inscription.xhtml";
-	}
 	
 	public String addUser() {
 		messageError = "";
 		messageSuccess = "";
 
-		if (!this.motDePasse.equals(motDePasseConfirmation)) {
+		if (!this.password.equals(motDePasseConfirmation)) {
 			messageError = "Les deux mots de passe ne correspondent pas ! Veuillez réessayer.";
 			return "";
 		}
 
 		try {
-			User user = new User(this.prenom, this.nom, this.genre, this.dateNaissance, this.email, this.motDePasse);
+			User user = new User();
+			user.setNom(nom);
+			user.setPrenom(prenom);
+			user.setDateNaissance(dateNaissance);
+			user.setGenre(genre);
+			user.setEmail(email);
+			user.setPassword(password);
+			user.setActive(true);
 			for (Adresse adresse : adressesTemp) {
 				user.getAdresses().add(adresse);
 			}
@@ -133,7 +145,47 @@ public class UserBean implements Serializable {
 			return "";
 		}
 	}
+	
+	
+	public String updatePassword() {
+		messageError = "";
+		messageSuccess = "";
 
+		if (!this.password.equals(motDePasseConfirmation)) {
+			messageError = "Les deux mots de passe ne correspondent pas ! Veuillez réessayer.";
+			return "";
+		}
+
+		try {
+			User currentUser= userMetier.getUserByEmail(email);
+			if(currentUser !=null) {
+				
+				currentUser.setPassword(password);
+				userMetier.updatePassword(password, currentUser.getEmail());
+			
+		        password = "";
+		        motDePasseConfirmation = "";
+	            
+	            messageSuccess = "Votre mot de passe a été modifié avec succès.";
+	            return "login.xhtml";
+	    		
+			}else {
+				
+				messageError = "Utilisateur introuvable avec cette adresse e-mail.";
+			}
+			
+			
+
+		} catch (Exception e) {
+			messageSuccess = "";
+			messageError = "Erreur d'inscription !\n" + e.getMessage();
+			System.out.println(e);
+		
+		}
+		return "";
+	}
+	
+	
 	public String deleteUser(User user) {
 		messageError = "";
 		messageSuccess = "";
@@ -192,6 +244,14 @@ public class UserBean implements Serializable {
 		return "";
 	}
 
+	public String getOldPassword() {
+		return oldPassword;
+	}
+
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+
 	public String getPrenom() {
 		return prenom;
 	}
@@ -232,12 +292,12 @@ public class UserBean implements Serializable {
 		this.email = email;
 	}
 
-	public String getMotDePasse() {
-		return motDePasse;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setMotDePasse(String motDePasse) {
-		this.motDePasse = motDePasse;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getMotDePasseConfirmation() {
@@ -294,6 +354,14 @@ public class UserBean implements Serializable {
 
 	public void setMessageError(String messageError) {
 		UserBean.messageError = messageError;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 }
