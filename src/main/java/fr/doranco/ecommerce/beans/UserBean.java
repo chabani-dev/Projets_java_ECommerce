@@ -162,6 +162,7 @@ public class UserBean implements Serializable {
 		}
 
 		try {
+<<<<<<< HEAD
 			if (context == null) {
 				context = FacesContext.getCurrentInstance().getExternalContext();
 			}
@@ -190,6 +191,37 @@ public class UserBean implements Serializable {
 		return "";
 	}
 
+=======
+        User currentUser = userMetier.getUserByEmail(email);
+        if (currentUser != null) {
+            // Récupérer la session existante ou en créer une nouvelle si elle n'existe pas
+            FacesContext context = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) context.getExternalContext().getSession(true);
+            
+            // Stocker l'objet utilisateur dans la session
+            session.setAttribute("user", currentUser);
+
+            currentUser.setPassword(password);
+            userMetier.updatePassword(password, currentUser.getEmail());
+
+            password = "";
+            motDePasseConfirmation = "";
+
+            messageSuccess = "Votre mot de passe a été modifié avec succès.";
+            return "login.xhtml";
+        } else {
+            messageError = "Utilisateur introuvable avec cette adresse e-mail.";
+        }
+    } catch (Exception e) {
+        messageSuccess = "";
+        messageError = "Erreur d'inscription !\n" + e.getMessage();
+        System.out.println(e);
+    }
+    return "";
+}
+	
+	
+>>>>>>> 51f7730192eae163c83c7e4c2f7ad0012a2592fc
 	public String deleteUser(User user) {
 		messageError = "";
 		messageSuccess = "";
