@@ -43,3 +43,5 @@ et dans le webContent on ceéer le fichier pom.xml qui regroupe tout le code con
 
 
 https://www.slideshare.net/mohamedyoussfi9/site-jee-de-ecommerce-bas-sur-spring-jpa-hibernate#9
+
+https://github.com/MossaabFrifita/EBoutique-Java-EE/blob/master/src/main/java/fr/infoking/eboutique/entites/Categorie.java
