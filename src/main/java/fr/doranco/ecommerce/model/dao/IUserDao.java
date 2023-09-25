@@ -3,7 +3,7 @@ package fr.doranco.ecommerce.model.dao;
 import java.util.List;
 import java.util.Map;
 
-import fr.doranco.ecommerce.entity.User;
+import fr.doranco.ecommerce.entity.pojo.User;
 
 public interface IUserDao {
 
@@ -19,5 +19,6 @@ public interface IUserDao {
 	 
 	void updatePassword(String newPassword, String user)throws Exception;
 
+	public User getByProfil(int id) throws Exception;
 
 }

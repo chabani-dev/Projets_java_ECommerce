@@ -10,11 +10,12 @@ import java.util.Set;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
 
-import fr.doranco.ecommerce.entity.Adresse;
-import fr.doranco.ecommerce.entity.User;
+import fr.doranco.ecommerce.entity.dto.*;
+import fr.doranco.ecommerce.entity.pojo.Adresse;
+import fr.doranco.ecommerce.entity.pojo.User;
 import fr.doranco.ecommerce.meties.IUserMetier;
 import fr.doranco.ecommerce.meties.UserMetier;
 
@@ -56,8 +57,7 @@ public class UserBean implements Serializable {
 
 	@ManagedProperty(name = "codePostal", value = "75000")
 	private String codePostal;
-	
-	
+
 	private boolean isActive;
 
 	private static String messageSuccess = "";
@@ -69,6 +69,9 @@ public class UserBean implements Serializable {
 
 	private List<String> adressesStr = new ArrayList<String>();
 
+	private ExternalContext context;
+	
+	private UserDto connectedUser;
 	static {
 		messageError = messageSuccess = "";
 	}
@@ -93,23 +96,26 @@ public class UserBean implements Serializable {
 
 	public String seConnecter() {
 		messageSuccess = "";
+		messageError = "";
 		try {
-			User user = userMetier.seConnecter(email, password);
-			if (user != null) {
-				FacesContext context = FacesContext.getCurrentInstance();
-	            HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
-	            session.setAttribute("user", user);
+			UserDto userDto = userMetier.seConnecter(email, password);
+			if (userDto != null) {
+//				if (context == null) {
+//					context = FacesContext.getCurrentInstance().getExternalContext();
+//				}
+//				context.getSessionMap().put(email, email);
+				connectedUser = userDto;
 				return "achats.xhtml";
 			}
 			messageError = "Email et/ou mot de passe incorrect(s) !";
-			
+
 		} catch (Exception e) {
 			messageError = "Erreur technique lors de l'identification !\n" + e.getMessage();
 			System.out.println(e);
 		}
 		return "";
 	}
-	
+
 	public String addUser() {
 		messageError = "";
 		messageSuccess = "";
@@ -120,19 +126,19 @@ public class UserBean implements Serializable {
 		}
 
 		try {
-			User user = new User();
-			user.setNom(nom);
-			user.setPrenom(prenom);
-			user.setDateNaissance(dateNaissance);
-			user.setGenre(genre);
-			user.setEmail(email);
-			user.setPassword(password);
-			user.setActive(true);
+			UserDto userDto = new UserDto();
+			userDto.setNom(nom);
+			userDto.setPrenom(prenom);
+			userDto.setDateNaissance(dateNaissance);
+			userDto.setGenre(genre);
+			userDto.setEmail(email);
+			userDto.setPassword(password);
+			userDto.setActive(true);
 			for (Adresse adresse : adressesTemp) {
-				user.getAdresses().add(adresse);
+				userDto.getAdresses().add(adresse);
 			}
 
-			userMetier.addUser(user);
+			userMetier.addUser(userDto);
 			adressesTemp.clear();
 			return "achats.xhtml";
 
@@ -145,8 +151,7 @@ public class UserBean implements Serializable {
 			return "";
 		}
 	}
-	
-	
+
 	public String updatePassword() {
 		messageError = "";
 		messageSuccess = "";
@@ -157,35 +162,34 @@ public class UserBean implements Serializable {
 		}
 
 		try {
-			User currentUser= userMetier.getUserByEmail(email);
-			if(currentUser !=null) {
-				
-				currentUser.setPassword(password);
-				userMetier.updatePassword(password, currentUser.getEmail());
-			
-		        password = "";
-		        motDePasseConfirmation = "";
-	            
-	            messageSuccess = "Votre mot de passe a été modifié avec succès.";
-	            return "login.xhtml";
-	    		
-			}else {
-				
-				messageError = "Utilisateur introuvable avec cette adresse e-mail.";
+			if (context == null) {
+				context = FacesContext.getCurrentInstance().getExternalContext();
 			}
-			
-			
+			UserDto currentUser = userMetier.getUserByEmail(connectedUser.getEmail());
+			if (currentUser == null) {
+				messageError = "Utilisateur introuvable avec cette adresse e-mail.";
+				return "";
+			}
+			if (!currentUser.getPassword().equals(password)) {
+		
+				messageError = "Mot de passe incorrect. Veuillez réessayer.";
+			}
+			currentUser.setPassword(password);
+			userMetier.updatePassword(password, currentUser.getEmail());
 
+			password = "";
+			motDePasseConfirmation = "";
+
+			messageSuccess = "Votre mot de passe a été modifié avec succès.";
+			return "login.xhtml";
 		} catch (Exception e) {
 			messageSuccess = "";
 			messageError = "Erreur d'inscription !\n" + e.getMessage();
 			System.out.println(e);
-		
 		}
 		return "";
 	}
-	
-	
+
 	public String deleteUser(User user) {
 		messageError = "";
 		messageSuccess = "";

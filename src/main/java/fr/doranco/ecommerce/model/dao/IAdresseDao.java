@@ -2,7 +2,7 @@ package fr.doranco.ecommerce.model.dao;
 
 
 
-import fr.doranco.ecommerce.entity.Adresse;
+import fr.doranco.ecommerce.entity.pojo.Adresse;
 
 public interface IAdresseDao {
 

@@ -1,7 +1,7 @@
 package fr.doranco.ecommerce.main;
 
-import fr.doranco.ecommerce.entity.Commande;
-import fr.doranco.ecommerce.entity.User;
+import fr.doranco.ecommerce.entity.pojo.Commande;
+import fr.doranco.ecommerce.entity.pojo.User;
 import fr.doranco.ecommerce.model.dao.CommandeDao;
 import fr.doranco.ecommerce.model.dao.UserDao;
 

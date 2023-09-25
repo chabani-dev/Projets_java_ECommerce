@@ -1,10 +1,3 @@
-body{
-	
-background-color: #a4c3b2;
-background-image: revert;
-/* background-color: transparent;*/
-background-repeat: no-repeat;
-}
 
 #page{
 	width: 800px;
@@ -14,7 +7,7 @@ background-repeat: no-repeat;
 #header{
 	width: 100%;
 	height: 100%;
-    border: thick double rgb(215 102 102);
+    border: thick double rgb(255, 128, 255);;
     margin-bottom: 16px;
     text-align: center;
     color: gray;
@@ -25,7 +18,7 @@ background-repeat: no-repeat;
 	width: 100%;
 	margin-right: 16px;
 	margin-bottom: 16px;
-	border: thick double rgb(215 102 102);
+	border: thick double rgb(255, 128, 255);
     text-align: center;
   	height: 65vh;
 }
@@ -34,7 +27,7 @@ background-repeat: no-repeat;
 	width: 100%;
 	height: 100px;
 	text-align: center;
-    border: thick double rgb(215 102 102);
+    border: thick double rgb(255, 128, 255);
     margin-bottom: 16px;
     text-align: center;
   
@@ -54,7 +47,7 @@ img {
 input#form\:addUser {
     display: flex;
     position: relative;
-    background: #b94646;
+    background: rgb(255, 255, 255);
     border-radius: 6px;
     height: 30px;
     left: 14vh;
@@ -81,7 +74,7 @@ h3 {
 h:outputLabel {
   display: block;
   font-weight: bold;
-  color: #555;
+  color: rgb(255, 128, 255);
   margin-bottom: 5px;
 }
 
@@ -97,7 +90,7 @@ h:inputText, h:inputSecret {
 
 /* Styles for error messages */
 h:message {
-  color: red;
+ 
   font-size: 12px;
   margin-top: 5px;
 }

@@ -3,7 +3,7 @@ package fr.doranco.ecommerce.model.dao;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import fr.doranco.ecommerce.entity.Adresse;
+import fr.doranco.ecommerce.entity.pojo.Adresse;
 import fr.doranco.hibernate.model.connect.HeberniteDataSource;
 
 public class AdresseDao implements IAdresseDao {

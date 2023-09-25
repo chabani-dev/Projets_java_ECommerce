@@ -1,4 +1,4 @@
-package fr.doranco.ecommerce.entity;
+package fr.doranco.ecommerce.entity.pojo;
 
 import java.io.Serializable;
 
@@ -91,6 +91,14 @@ public class Adresse implements Serializable {
 
 	public void setCodePostal(String codePostal) {
 		this.codePostal = codePostal;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override

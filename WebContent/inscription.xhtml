@@ -36,7 +36,7 @@
 								<f:selectItem itemLabel="Madame" itemValue="Mme" />
 								<f:selectItem itemLabel="Mademoiselle" itemValue="Mlle" />
 							</h:selectOneRadio>
-							<h:message for="genre" style="color:red"></h:message>
+							<h:message for="genre" style="color:black"></h:message>
 						</h:panelGrid>
 
 						<h:panelGrid columns="3" cellpadding="0" cellspacing="8">
@@ -47,7 +47,7 @@
 								<f:validateLength minimum="2" maximum="20" />
 								<f:validateRegex pattern="^[a-zA-Z-\s]*"></f:validateRegex>
 							</h:inputText>
-							<h:message for="nom" style="color:red"></h:message>
+							<h:message for="nom" style="color:black"></h:message>
 
 							<h:outputLabel value="Prénom : "></h:outputLabel>
 							<h:inputText id="prenom" value="#{userbean.prenom}"
@@ -61,7 +61,7 @@
 								requiredMessage="L'email est obligatoire !">
 								<f:validateLength minimum="8" maximum="30" />
 							</h:inputText>
-							<h:message for="email" style="color:red"></h:message>
+							<h:message for="email" style="color:black"></h:message>
 
 							<h:outputLabel value="Mot de passe : "></h:outputLabel>
 							<h:inputSecret id="motDePasse" value="#{userbean.password}"
@@ -79,7 +79,7 @@
 								requiredMessage="Le mot de passe de confirmation est obligatoire !">
 								<f:validateLength minimum="8" maximum="30" />
 							</h:inputSecret>
-							<h:message for="motDePasseConfirmation" style="color:red"></h:message>
+							<h:message for="motDePasseConfirmation" style="color:black"></h:message>
 
 
 							<h:outputLabel value="Date de naissance : "></h:outputLabel>
@@ -88,7 +88,7 @@
 								requiredMessage="La date de naissance est obligatoire !">
 								<f:convertDateTime pattern="dd/MM/yyyy"></f:convertDateTime>
 							</h:inputText>
-							<h:message for="dateNaissance" style="color:red"></h:message>
+							<h:message for="dateNaissance" style="color:black"></h:message>
 
 						</h:panelGrid>
 
@@ -109,7 +109,7 @@
 							<h:outputText value="#{userbean.messageSuccess}"
 								style="color:green"></h:outputText>
 							<h:outputText value="#{userbean.messageError}"
-								style="color:orange"></h:outputText>
+								style="color:red"></h:outputText>
 						</h:panelGrid>
 					</h:panelGroup>
 
@@ -126,26 +126,26 @@
 							<h:inputText id="numero" value="#{userbean.numero}"
 								required="true" requiredMessage="Le numéro est obligatoire !">
 							</h:inputText>
-							<h:message for="numero" style="color:red"></h:message>
+							<h:message for="numero" style="color:black"></h:message>
 
 							<h:outputLabel value="Rue : "></h:outputLabel>
 							<h:inputText id="rue" value="#{userbean.rue}" required="true"
 								requiredMessage="La rue est obligatoire !">
 							</h:inputText>
-							<h:message for="rue" style="color:red"></h:message>
+							<h:message for="rue" style="color:black"></h:message>
 
 							<h:outputLabel value="Ville : "></h:outputLabel>
 							<h:inputText id="ville" value="#{userbean.ville}" required="true"
 								requiredMessage="L aville est obligatoire !">
 							</h:inputText>
-							<h:message for="ville" style="color:red"></h:message>
+							<h:message for="ville" style="color:black"></h:message>
 
 							<h:outputLabel value="Code postal : "></h:outputLabel>
 							<h:inputText id="codePostal" value="#{userbean.codePostal}"
 								required="true"
 								requiredMessage="Le code postal est obligatoire !">
 							</h:inputText>
-							<h:message for="codePostal" style="color:red"></h:message>
+							<h:message for="codePostal" style="color:black"></h:message>
 
 						</h:panelGrid>
 						<h:panelGrid columns="3" cellpadding="0" cellspacing="8">
@@ -161,7 +161,7 @@
 				<h:form>
 					<h:panelGrid columns="1" cellpadding="0" cellspacing="0">
 						<ui:repeat value="#{userbean.getAllAdresses()}" var="a">
-							<h:outputText style="color:yellow" value="#{a}" />
+							<h:outputText style="color:red" value="#{a}" />
 							<br />
 						</ui:repeat>
 					</h:panelGrid>

@@ -9,11 +9,14 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import fr.doranco.ecommerce.entity.User;
+import fr.doranco.ecommerce.entity.pojo.User;
 import fr.doranco.hibernate.model.connect.HeberniteDataSource;
 
 public class UserDao implements IUserDao {
-
+	
+	
+	
+	
 	public void addUser(User user) throws Exception {
 
 		Session session = HeberniteDataSource.getInstance().getSession();
@@ -29,6 +32,7 @@ public class UserDao implements IUserDao {
 			if (tx != null) {
 				tx.rollback();
 			}
+			throw e;
 		} finally {
 			if (session != null && session.isOpen()) {
 				session.close();
@@ -207,6 +211,12 @@ public class UserDao implements IUserDao {
 			session.close();
 		}
 		
+	}
+
+	@Override
+	public User getByProfil(int id) throws Exception {
+		
+		return null;
 	}
 
 }

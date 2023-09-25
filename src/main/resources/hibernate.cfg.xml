@@ -19,9 +19,10 @@
         <property name="hibernate.connection.autocommit">true</property>
         <property name="hibernate.charSet">UTF-8</property>
         
-        <mapping class= "fr.doranco.ecommerce.entity.Adresse"></mapping>
-        <mapping class= "fr.doranco.ecommerce.entity.User"></mapping>
-         <mapping class= "fr.doranco.ecommerce.entity.Commande"></mapping> 
+        <mapping class= "fr.doranco.ecommerce.entity.pojo.Params"></mapping>
+        <mapping class= "fr.doranco.ecommerce.entity.pojo.Adresse"></mapping>
+        <mapping class= "fr.doranco.ecommerce.entity.pojo.User"></mapping>
+        <mapping class= "fr.doranco.ecommerce.entity.pojo.Commande"></mapping> 
         
     </session-factory>
 </hibernate-configuration>

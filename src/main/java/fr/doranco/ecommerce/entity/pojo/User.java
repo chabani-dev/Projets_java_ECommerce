@@ -1,7 +1,8 @@
-package fr.doranco.ecommerce.entity;
+package fr.doranco.ecommerce.entity.pojo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class User implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date dateNaissance;
 
-	@Column(name = "genre", length = 25, nullable = true)
+	@Column(name = "genre", length = 25, nullable = false)
 	private String genre;
 
 	@Column(name = "isActive", nullable = false)
@@ -48,9 +49,25 @@ public class User implements Serializable {
 
 	@Column(name = "email", nullable = false)
 	private String email;
+	
+	
+	@Column(name = "telephone", nullable = false)
+	private String telephone;
 
 	@Column(name = "password", nullable = false)
-	private String password;
+	private byte[] password;
+	
+	
+	
+	@Column(name = "CartePaiement", nullable = false)
+	private byte[] CartePaiement;
+	
+	@Column(name = "profil", nullable = false)
+	private String profil;
+	
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
+	private List<ArticlePanier>  articlePaniers;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
 	private List<Adresse> adresses;
@@ -59,8 +76,46 @@ public class User implements Serializable {
 	private List<Commande> commandes;
 	
 	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	private List<Commentaire > commentaires;
+	
+	
+	
+	
 	public User() {
 		this.adresses = new ArrayList<Adresse>();
+	}
+
+	public byte[] getCartePaiement() {
+		return CartePaiement;
+	}
+
+	public void setCartePaiement(byte[] cartePaiement) {
+		CartePaiement = cartePaiement;
+	}
+
+	public List<ArticlePanier> getArticlePaniers() {
+		return articlePaniers;
+	}
+
+	public void setArticlePaniers(List<ArticlePanier> articlePaniers) {
+		this.articlePaniers = articlePaniers;
+	}
+
+	public List<Commande> getCommandes() {
+		return commandes;
+	}
+
+	public void setCommandes(List<Commande> commandes) {
+		this.commandes = commandes;
+	}
+
+	public List<Commentaire> getCommentaires() {
+		return commentaires;
+	}
+
+	public void setCommentaires(List<Commentaire> commentaires) {
+		this.commentaires = commentaires;
 	}
 
 	public int getId() {
@@ -119,11 +174,21 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public String getPassword() {
+	
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+
+	public byte[] getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(byte[] password) {
 		this.password = password;
 	}
 
@@ -131,8 +196,23 @@ public class User implements Serializable {
 		return adresses;
 	}
 
-	public void setAdresses(List<Adresse> adresses) {
-		this.adresses = adresses;
+	public String getProfil() {
+		return profil;
 	}
+
+	public void setProfil(String profil) {
+		this.profil = profil;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", dateNaissance=" + dateNaissance
+				+ ", genre=" + genre + ", isActive=" + isActive + ", email=" + email + ", telephone=" + telephone
+				+ ", password=" + Arrays.toString(password) + ", CartePaiement=" + Arrays.toString(CartePaiement)
+				+ ", profil=" + profil + ", articlePaniers=" + articlePaniers + ", adresses=" + adresses
+				+ ", commandes=" + commandes + ", commentaires=" + commentaires + "]";
+	}
+	
+	
 
 }

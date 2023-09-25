@@ -1,7 +1,7 @@
-package fr.doranco.ecommerce.entity;
+package fr.doranco.ecommerce.entity.pojo;
 
 import java.io.Serializable;
-import java.util.List;
+
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,7 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
@@ -40,22 +42,32 @@ public class LigneCommande implements Serializable {
 	@Column(name= "quantite" , nullable = false)
 	private int quantite;
 	
+	@Column(name= "remiseArticle" , nullable = false)
+	private int remiseArticle ;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "commande")
-	private List<LigneCommande> listesligneCommandes;
-		
+	
+	 @ManyToOne
+	 @JoinColumn(name = "commande_id") 
+	 private Commande commande;
+	 
+	 
+	 @OneToOne(cascade = CascadeType.ALL)
+	 @JoinColumn(name = "article_id") 
+	 private Article article;
+	 
+	 
 	public LigneCommande() {
 		
 	}
 
-	public LigneCommande(int id, String titreArticle, Float prixArticle, int quantite,
-			List<LigneCommande> listesligneCommandes) {
-
-		this.id = id;
+	public LigneCommande(int id, String titreArticle, Float prixArticle, int quantite, int remiseArticle,
+			Commande commande, Article article) {
 		this.titreArticle = titreArticle;
 		this.prixArticle = prixArticle;
 		this.quantite = quantite;
-		this.listesligneCommandes = listesligneCommandes;
+		this.remiseArticle = remiseArticle;
+		this.commande = commande;
+		this.article = article;
 	}
 
 
@@ -98,21 +110,34 @@ public class LigneCommande implements Serializable {
 		this.quantite = quantite;
 	}
 
-
-	public List<LigneCommande> getListesligneCommandes() {
-		return listesligneCommandes;
+	public int getRemiseArticle() {
+		return remiseArticle;
 	}
 
+	public void setRemiseArticle(int remiseArticle) {
+		this.remiseArticle = remiseArticle;
+	}
+
+	public Commande getCommande() {
+		return commande;
+	}
+
+	public Article getArticle() {
+		return article;
+	}
+
+	public void setArticle(Article article) {
+		this.article = article;
+	}
 
 	@Override
 	public String toString() {
 		return "LigneCommande [id=" + id + ", titreArticle=" + titreArticle + ", prixArticle=" + prixArticle
-				+ ", quantite=" + quantite + ", listesligneCommandes=" + listesligneCommandes + "]";
+				+ ", quantite=" + quantite + ", remiseArticle=" + remiseArticle + ", commande=" + commande
+				+ ", article=" + article + "]";
 	}
 
 
-	
-	
 	
 	
 

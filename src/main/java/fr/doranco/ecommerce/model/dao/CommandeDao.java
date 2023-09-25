@@ -7,7 +7,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
-import fr.doranco.ecommerce.entity.Commande;
+import fr.doranco.ecommerce.entity.pojo.Commande;
 import fr.doranco.hibernate.model.connect.HeberniteDataSource;
 
 
