@@ -40,3 +40,6 @@ on istall maven org.glassfish » javax.faces » 2.2.20
 
 aprés on créer la packages ecommerce 
 et dans le webContent on ceéer le fichier pom.xml qui regroupe tout le code connecter et mvnrepository.com
+
+
+https://www.slideshare.net/mohamedyoussfi9/site-jee-de-ecommerce-bas-sur-spring-jpa-hibernate#9
